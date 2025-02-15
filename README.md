@@ -4,7 +4,7 @@ This repository is a course created to help you learn Julia, a high-level, high-
 
 ## Introduction
 
-Welcome to the "How to Julia" course! This course is designed to help you learn the Julia programming language from scratch. Whether you are a beginner or have some experience in programming, this course will provide you with the knowledge and skills needed to effectively use Julia.
+Welcome to the "How-to-Julia" course! This course is designed to help you learn the Julia programming language from scratch. Whether you are a beginner or have some experience in programming, this course will provide you with the knowledge and skills needed to effectively use Julia.
 
 ## Getting Started
 
