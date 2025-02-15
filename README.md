@@ -1,4 +1,4 @@
-# How to Julia
+# How-to-Julia
 
 This repository is a course created to help you learn Julia, a high-level, high-performance programming language for technical computing.
 
