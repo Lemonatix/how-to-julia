@@ -22,6 +22,5 @@ println("e_str1 == e_str2: $(e_str1 == e_str2)") # e_str1 == e_str2 is enough
 @printf "a character: %c\n" 'α'
 @printf "a string: %s\n" "look I'm a string!"
 @printf "right justify a string: %50s\n" "width 50, text right justified!"
-#> right justify a string:                    width 50, text right justified!
 @printf "a pointer: %p\n" 100000000
 @printf "print an integer: %d\n" 1e10
