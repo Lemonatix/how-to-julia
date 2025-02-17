@@ -1,0 +1,265 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{geometry}
+\geometry{a4paper, margin=1.5cm}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\setlength{\parskip}{0.5em}
+\setlength{\parindent}{0em}
+
+\title{Formelblatt: Analysis, Lineare Algebra \& Differentialgleichungen}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section{Vollständige Induktion}
+\textbf{Prinzip:}
+\begin{enumerate}[label=\arabic*.]
+  \item \textbf{Induktionsanfang:} Zeige \(P(n_0)\) für den Startwert \(n_0\) (z.B. \(n_0=0\) oder \(1\)).
+  \item \textbf{Induktionsvoraussetzung:} Angenommen, \(P(n)\) gilt für ein beliebiges, aber festes \(n \ge n_0\).
+  \item \textbf{Induktionsschritt:} Beweise, dass \(P(n) \Rightarrow P(n+1)\).
+\end{enumerate}
+
+\section{Rechenregeln}
+\subsection*{Wurzeln:}
+\[
+\sqrt{ab} = \sqrt{a}\sqrt{b}, \quad \sqrt{\frac{a}{b}} = \frac{\sqrt{a}}{\sqrt{b}}, \quad \sqrt[n]{a^m} = a^{\frac{m}{n}}.
+\]
+\subsection*{Logarithmen:}
+\[
+\log(ab) = \log a + \log b, \quad \log\left(\frac{a}{b}\right) = \log a - \log b, \quad \log(a^r)=r\log a.
+\]
+\subsection*{Potenzen:}
+\[
+a^{m+n} = a^m \cdot a^n, \quad (a^m)^n = a^{mn}, \quad a^{-n} = \frac{1}{a^n}.
+\]
+
+\section{Komplexe Zahlen}
+\subsection*{Kartesische Darstellung:}
+\[
+z = x + iy,\quad x,y \in \mathbb{R}.
+\]
+\subsection*{Polardarstellung:}
+\[
+z = r (\cos\varphi + i \sin\varphi),\quad r=|z|,\quad \varphi=\arg(z).
+\]
+\subsection*{Euler-Formel:}
+\[
+e^{i\varphi} = \cos\varphi + i \sin\varphi.
+\]
+
+\section{Additionstheoreme}
+\subsection*{Trigonometrisch:}
+\[
+\sin(\alpha \pm \beta) = \sin\alpha \cos\beta \pm \cos\alpha \sin\beta,
+\]
+\[
+\cos(\alpha \pm \beta) = \cos\alpha \cos\beta \mp \sin\alpha \sin\beta.
+\]
+\subsection*{Hyperbolisch:}
+\[
+\sinh(\alpha \pm \beta) = \sinh\alpha \cosh\beta \pm \cosh\alpha \sinh\beta,
+\]
+\[
+\cosh(\alpha \pm \beta) = \cosh\alpha \cosh\beta \pm \sinh\alpha \sinh\beta.
+\]
+
+\section{Binomialkoeffizient}
+\subsection*{Ohne Wiederholung (Kombinationen):}
+\[
+\binom{n}{k} = \frac{n!}{k!(n-k)!}, \quad 0 \le k \le n.
+\]
+\subsection*{Mit Wiederholung:}
+\[
+\binom{n+k-1}{k} = \frac{(n+k-1)!}{k!(n-1)!}.
+\]
+
+\section{Grenzwerte}
+\subsection*{Definition:}
+\[
+\lim_{n \to \infty} a_n = L \quad \Longleftrightarrow \quad \forall \varepsilon > 0 \; \exists N \in \mathbb{N} : |a_n - L| < \varepsilon \quad \forall n \ge N.
+\]
+\subsection*{L'Hôpital's Regel:}
+Falls \( \lim_{x \to a} f(x) = \lim_{x \to a} g(x) = 0\) oder \(\pm\infty\) und \(g'(x) \neq 0\) in einer Umgebung von \(a\), so gilt:
+\[
+\lim_{x \to a} \frac{f(x)}{g(x)} = \lim_{x \to a} \frac{f'(x)}{g'(x)},
+\]
+sofern der Grenzwert auf der rechten Seite existiert.
+
+\section{Sätze zu Folgen}
+\begin{itemize}
+  \item Jede konvergente Folge ist beschränkt.
+  \item Jede monotone und beschränkte Folge konvergiert.
+  \item \textbf{Bolzano-Weierstraß:} Jede beschränkte Folge besitzt mindestens eine konvergente Teilfolge.
+\end{itemize}
+
+\section{Konvergenzkriterien für Reihen und Potenzreihen}
+\subsection*{Leibnizkriterium (Alternierende Reihen):}
+Ist \( (a_n) \) monoton fallend und \( \lim_{n\to\infty} a_n = 0 \), dann konvergiert
+\[
+\sum_{n=1}^\infty (-1)^{n-1} a_n.
+\]
+\subsection*{Nullfolgenkriterium:}
+Falls \( \sum_{n=1}^\infty a_n \) konvergiert, so gilt \( \lim_{n\to\infty} a_n = 0 \).
+\subsection*{Absolute Konvergenz:}
+\[
+\text{Die Reihe } \sum_{n=1}^\infty a_n \text{ konvergiert absolut, wenn } \sum_{n=1}^\infty |a_n| \text{ konvergiert.}
+\]
+\subsection*{Majorantenkriterium:}
+Sind \( |a_n| \le b_n \) für alle \( n \) und konvergiert \( \sum_{n=1}^\infty b_n \), so konvergiert \( \sum_{n=1}^\infty a_n \) absolut.
+\subsection*{Quotientenkriterium:}
+Sei
+\[
+L = \lim_{n\to\infty} \left|\frac{a_{n+1}}{a_n}\right|.
+\]
+Dann:
+\[
+L < 1 \Rightarrow \text{absolute Konvergenz}, \quad L > 1 \Rightarrow \text{Divergenz}, \quad L = 1 \Rightarrow \text{unbestimmt.}
+\]
+\subsection*{Wurzelkriterium:}
+Sei
+\[
+L = \limsup_{n\to\infty} \sqrt[n]{|a_n|}.
+\]
+Dann:
+\[
+L < 1 \Rightarrow \text{absolute Konvergenz}, \quad L > 1 \Rightarrow \text{Divergenz}, \quad L = 1 \Rightarrow \text{unbestimmt.}
+\]
+\subsection*{Umordnungssatz:}
+Absolute Konvergenz garantiert, dass jede Umordnung den Wert der Reihe nicht ändert.
+
+\section{Grenzwerte von Funktionen \& Stetigkeit}
+\subsection*{Zwischenwertsatz:}
+Sei \( f:[a,b] \to \mathbb{R} \) stetig und \( f(a) \neq f(b) \). Dann gilt:
+\[
+\forall c \text{ zwischen } f(a) \text{ und } f(b) \; \exists \xi \in [a,b] : f(\xi) = c.
+\]
+\subsection*{Ableitung der Umkehrfunktion:}
+Ist \( f \) streng monoton und differenzierbar, so existiert \( f^{-1} \) mit
+\[
+(f^{-1})'(y) = \frac{1}{f'(x)} \quad \text{mit } y=f(x).
+\]
+\subsection*{Extremwertsatz:}
+Eine stetige Funktion auf einem kompakten Intervall \( [a,b] \) nimmt ihr Maximum und Minimum an.
+
+\section{Differenzialquotient und Ableitungen}
+\subsection*{Definition der Ableitung:}
+\[
+f'(x) = \lim_{h \to 0} \frac{f(x+h)-f(x)}{h}.
+\]
+\subsection*{Ableitungsregeln:}
+\begin{itemize}
+  \item \textbf{Summenregel:} \( (f+g)'(x) = f'(x) + g'(x) \).
+  \item \textbf{Produktregel:} \( (fg)'(x) = f'(x)g(x) + f(x)g'(x) \).
+  \item \textbf{Quotientenregel:} \( \left(\frac{f}{g}\right)'(x) = \frac{f'(x)g(x)-f(x)g'(x)}{[g(x)]^2} \).
+  \item \textbf{Kettenregel:} \( (f\circ g)'(x) = f'(g(x)) \cdot g'(x) \).
+  \item \textbf{Ableitung der Umkehrfunktion:} Siehe Zwischenwertsatz.
+\end{itemize}
+
+\section{Extremstellen}
+\subsection*{Notwendige Bedingung:}
+Falls \( f \) an \( x_0 \) ein lokales Extremum hat und differenzierbar ist, so gilt \( f'(x_0)=0 \).
+\subsection*{Hinreichende Bedingung:}
+Ist \( f'(x_0)=0 \) und
+\[
+f''(x_0) > 0 \quad (\text{lokales Minimum}) \quad \text{oder} \quad f''(x_0) < 0 \quad (\text{lokales Maximum}),
+\]
+so liegt ein Extremum vor.
+\subsection*{Sattelpunkte:}
+Falls \( f'(x_0)=0 \) und \( f''(x_0)=0 \), sind höhere Ableitungen zu untersuchen.
+
+\section{Satz von Rolle und Mittelwertsatz}
+\subsection*{Satz von Rolle:}
+Sei \( f:[a,b]\to\mathbb{R} \) stetig auf \( [a,b] \) und differenzierbar auf \( (a,b) \) mit \( f(a)=f(b) \). Dann existiert ein \( \xi \in (a,b) \) mit
+\[
+f'(\xi)=0.
+\]
+\subsection*{Mittelwertsatz:}
+Ist \( f:[a,b] \to \mathbb{R} \) stetig und auf \( (a,b) \) differenzierbar, so existiert ein \( \xi \in (a,b) \) mit
+\[
+f'(\xi) = \frac{f(b)-f(a)}{b-a}.
+\]
+
+\section{Taylorreihen}
+\subsection*{Satz von Taylor:}
+Für \( f \) in einer Umgebung von \( a \) gilt:
+\[
+f(x) = \sum_{k=0}^{n} \frac{f^{(k)}(a)}{k!}(x-a)^k + R_n(x),
+\]
+wobei \( R_n(x) \) der Restterm ist.
+
+\section{Integrale}
+\subsection*{Hauptsatz der Integralrechnung:}
+Sei \( f \) stetig auf \( [a,b] \) und \( F \) eine Stammfunktion von \( f \) (\( F' = f \)). Dann:
+\[
+\int_a^b f(x)\,dx = F(b)-F(a).
+\]
+\subsection*{Substitution:}
+Mit \( u=g(x) \) gilt:
+\[
+\int f(g(x))g'(x)\,dx = \int f(u)\,du.
+\]
+\subsection*{Partielle Integration:}
+\[
+\int u(x)v'(x)\,dx = u(x)v(x) - \int u'(x)v(x)\,dx.
+\]
+\subsection*{Riemannscher Integralbegriff:}
+Definition über Zerlegung des Integrationsintervalls, Riemann-Summen und Grenzwertbildung.
+\subsection*{Cauchyscher Hauptwert:}
+Für symmetrische uneigentliche Integrale:
+\[
+\text{p.v.} \int_{-a}^{a} f(x)\,dx = \lim_{a \to \infty} \int_{-a}^{a} f(x)\,dx.
+\]
+\subsection*{Uneigentliche Integrale:}
+\[
+\int_a^\infty f(x)\,dx = \lim_{b \to \infty} \int_a^b f(x)\,dx.
+\]
+\subsection*{Integralkriterium für Reihen:}
+Sei \( a_n = f(n) \) mit \( f \) monoton fallend und \( f(x)\ge0 \). Dann gilt:
+\[
+\sum_{n=1}^\infty a_n \text{ konvergiert } \Longleftrightarrow \int_1^\infty f(x)\,dx < \infty.
+\]
+
+\section{Differentialgleichungen (DGL)}
+\subsection*{Erste Ordnung}
+\subsubsection*{Trennung der Variablen:}
+\[
+\frac{dy}{dx} = f(x)g(y) \quad \Rightarrow \quad \int \frac{dy}{g(y)} = \int f(x)\,dx.
+\]
+\subsubsection*{Lineare DGL:}
+\[
+y' + p(x)y = q(x), \quad \mu(x)=\exp\left(\int p(x)\,dx\right),
+\]
+Lösung:
+\[
+y(x)=\frac{1}{\mu(x)}\left( \int \mu(x)q(x)\,dx + C \right).
+\]
+
+\subsection*{Zweite Ordnung}
+\subsubsection*{Homogene DGL:}
+\[
+a\, y'' + b\, y' + c\, y = 0, \quad \Delta = b^2 - 4ac.
+\]
+Lösungen:
+\[
+\begin{cases}
+\Delta > 0: & y = C_1 e^{\lambda_1 x} + C_2 e^{\lambda_2 x}, \quad \lambda_{1,2}=\frac{-b\pm\sqrt{\Delta}}{2a},\\[1ex]
+\Delta = 0: & y = (C_1 + C_2 x)e^{\lambda x}, \quad \lambda=-\frac{b}{2a},\\[1ex]
+\Delta < 0: & y = e^{\alpha x}\left(C_1 \cos(\beta x) + C_2 \sin(\beta x)\right), \quad \alpha=-\frac{b}{2a},\; \beta=\frac{\sqrt{-\Delta}}{2a}.
+\end{cases}
+\]
+\subsubsection*{Inhomogene DGL:}
+Gesamtlösung:
+\[
+y(x)= y_h(x) + y_p(x),
+\]
+wobei \(y_h\) die Lösung der homogenen Gleichung und \(y_p\) eine spezielle Lösung der inhomogenen DGL ist.  
+Methoden: Variation der Konstanten oder Ansatz der unbestimmten Koeffizienten.
+
+\end{document}
