@@ -11,7 +11,6 @@ y = -7:0.1:7
 a = 1
 b = 1
 
-# Create an animated plot
 anim = @animate for azimuth in 0:8:360
     plot(
         x, y, f,
@@ -20,9 +19,8 @@ anim = @animate for azimuth in 0:8:360
         xlabel="x", ylabel="y", zlabel="f(x,y)",
         legend=false,
         camera=(azimuth, 30),
-        color=cgrad([:orange, :yellow]) # Use a gradient transitioning to yellow
+        color=cgrad([:orange, :yellow]),
     )
 end
 
-# Save the animation as a GIF
 gif(anim, "hyperbolic_paraboloid_rotation.gif", fps=30)
