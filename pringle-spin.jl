@@ -12,8 +12,16 @@ a = 1
 b = 1
 
 # Create an animated plot
-anim = @animate for azimuth in 0:9:360
-    plot(x, y, f, st=:surface, title="Hyperbolic Paraboloid", xlabel="x", ylabel="y", zlabel="f(x,y)", legend=false, camera=(azimuth, 30))
+anim = @animate for azimuth in 0:8:360
+    plot(
+        x, y, f,
+        st=:surface,
+        title="Hyperbolic Paraboloid",
+        xlabel="x", ylabel="y", zlabel="f(x,y)",
+        legend=false,
+        camera=(azimuth, 30),
+        color=cgrad([:orange, :yellow]) # Use a gradient transitioning to yellow
+    )
 end
 
 # Save the animation as a GIF
