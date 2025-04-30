@@ -10,7 +10,7 @@ x = -4:0.05:4
 y = -2:0.05:2
 a, b = 3.0, 1.5
 
-anim = @animate for azimuth in 0:12.0:360
+anim = @animate for azimuth in 0:5.0:360
     plot(
         x, y, f,
         st=:surface,
