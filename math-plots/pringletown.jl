@@ -9,7 +9,7 @@ f(x,y) = x^2/a^2 - y^2/b^2
 
 bpm      = 122        
 fps      = 30
-period_s = 4*(60/bpm)  # two beats per full 360°
+period_s = 2*(60/bpm)  # two beats per full 360°
 nframes  = round(Int, period_s*fps)
 angles   = range(0, stop=360, length=nframes)
 
