@@ -1,5 +1,7 @@
 using Plots
 
+plotly()
+
 xs = range(-3, 3, length=200)
 ys = range(-3, 3, length=200)
 
