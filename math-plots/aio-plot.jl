@@ -2,8 +2,8 @@ using Plots
 
 plotly()
 
-xs = range(-4, 4, length=200)
-ys = range(-4, 4, length=200)
+xs = range(-4, 4, length=500)
+ys = range(-4, 4, length=500)
 
 f1(x,y) = x^2 - y^3
 Z1 = [f1(x,y) for x in xs, y in ys]
