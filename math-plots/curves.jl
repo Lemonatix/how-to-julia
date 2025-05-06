@@ -13,7 +13,7 @@ p1 = plot(
     aspect_ratio = :equal,
 )
 
-t2 = range(0, 10, length=500)
+t2 = range(0, 100, length=500)
 x2 = t2
 y2 = t2 .* cos.(t2)
 z2 = t2 .* sin.(t2)
