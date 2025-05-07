@@ -6,6 +6,8 @@ This repository is a course created to help learn Julia, a high-level, high-perf
 
 Welcome to the "How-to-Julia" course! This course is designed to help you learn the Julia programming language from scratch. Whether you are a beginner or have some experience in programming, this course will provide you with the knowledge and skills needed to effectively use Julia.
 
+Also there is a dedicated folder for mathematics, as julia is a superb tool to easily visualise characteristics in math. 
+
 ## Getting Started
 
 To get started with the course, you will need to have Julia installed on your system. You can download and install Julia from the official website [here](https://julialang.org/downloads/).
