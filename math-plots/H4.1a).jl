@@ -1,24 +1,24 @@
 using Plots
-plotly()  # oder pyplot(), plotly(), …
+plotly()
 
-# 1) Taylor-Polynome aus H4.1a definieren
-#    T1(h,k)   = ½·h − ½·k
-#    T2(h,k)   = ½·h − ½·k − ¼·h^2 + ¼·k^2
+# 1) Originalfunktion und Taylor-Polynome definieren
+f(x,y)  = (x - y)/(x + y)
 T1(h,k) =  0.5h - 0.5k
 T2(h,k) =  0.5h - 0.5k - 0.25h^2 + 0.25k^2
 
-# 2) Gitter im (x,y)-Bereich um (1,1)
-xs = range(0.0, 2.0, length=200)
-ys = range(0.0, 2.0, length=200)
+# 2) Gitter – hier vermeiden wir x+y=0
+xs = range(0.1, 2.0, length=200)
+ys = range(0.1, 2.0, length=200)
 
-# 3) h = x-1, k = y-1 und Z-Werte für T1/T2
-Z1 = [T1(x-1, y-1) for x in xs, y in ys]
-Z2 = [T2(x-1, y-1) for x in xs, y in ys]
+# 3) Z-Werte berechnen
+Zf  = [f(x,y)          for x in xs, y in ys]
+Zt1 = [T1(x-1, y-1)    for x in xs, y in ys]
+Zt2 = [T2(x-1, y-1)    for x in xs, y in ys]
 
-# 4) Zwei Surface-Plots nebeneinander
+# 4) Plot: Original | T1 | T2
 plot(
-  surface(xs, ys, Z1, xlabel="x", ylabel="y", zlabel="T₁", title="T₁(1,1)"),
-  surface(xs, ys, Z2, xlabel="x", ylabel="y", zlabel="T₂", title="T₂(1,1)"),
-  layout = (1,2),
-  size = (900,400)
+  surface(xs, ys, Zf,  xlabel="x", ylabel="y", zlabel="f",  title="f(x,y)"),
+  surface(xs, ys, Zt1, xlabel="x", ylabel="y", zlabel="T₁", title="T₁ um (1,1)"),
+  surface(xs, ys, Zt2, xlabel="x", ylabel="y", zlabel="T₂", title="T₂ um (1,1)"),
+  layout = (1,3), size = (1200,400)
 )
