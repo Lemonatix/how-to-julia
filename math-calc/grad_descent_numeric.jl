@@ -4,8 +4,7 @@ function grad_f(x)
 end
 
 function run_gradient_descent()
-    tau = 1.0
-    x   = [1.0, 1.0]
+    tau = 1.0; x = [1.0, 1.0]
 
     for k in 1:4
         x = x .- tau .* grad_f(x)
