@@ -1,6 +1,5 @@
 import numpy as np
 import pandas as pd
-import ace_tools as tools
 
 def grad_f(x):
     x1, x2 = x
@@ -17,4 +16,4 @@ for k in range(4):
     iterates.append(x.copy())
 
 df = pd.DataFrame(iterates[1:], columns=['x1', 'x2'], index=[f'k={i}' for i in range(1,5)])
-tools.display_dataframe_to_user(name="Gradientenverfahren-Schritte (Python)", dataframe=df)
+print(df)
