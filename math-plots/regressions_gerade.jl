@@ -14,7 +14,7 @@ scatter(
     label       = "Datenpunkte",
     xlabel      = "Jahr (x)",
     ylabel      = "Weltbevölkerung (Mrd.)",
-    title       = "Lineare Regression der Weltbevölkerung",
+    title       = "Lin. Reg. der Weltbevölkerung",
     legend      = :topleft,
     markercolor = :blue,
     markersize  = 6
