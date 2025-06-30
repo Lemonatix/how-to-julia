@@ -1,5 +1,5 @@
 using Plots
-plotlyjs()
+plotly()
 
 as = vcat(range(-2, -0.1, length=120),
           range( 0.1,  2.0, length=120))
