@@ -3,7 +3,7 @@ using Plots
 
 plotly()
 
-f(x,y) = x*y / (x^2 + y^2)
+f(x,y) = x*y^2 / (x^2 + y^2)
 
 x = -7:0.1:7
 y = -7:0.1:7
