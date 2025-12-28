@@ -12,6 +12,15 @@ Also there is a dedicated folder for mathematics, as julia is a superb tool to e
 ## Getting Started
 
 To get started with the course, you will need to have Julia installed on your system. You can download and install Julia from the official website [here](https://julialang.org/downloads/).
+As some files are hosted that are from the math module MA0010 (2025) at TUM, Pluto is a necessary install as well. To install Pluto, use the following commands
+```julia
+import Pkg; Pkg.add("Pluto")
+```
+and to open Pluto use 
+```julia
+import Pluto; Pluto.run()
+```
+leading Pluto to open in the browser.
 
 ## Contributing
 
