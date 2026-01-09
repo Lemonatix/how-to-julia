@@ -1,0 +1,608 @@
+% !TeX program = pdflatex
+% Kompiliert ohne Shell-Escape (kein minted nötig).
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[margin=2.2cm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath, amssymb}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{booktabs}
+
+
+% --- Listings (Julia-Code) ---
+\usepackage{listings}
+\lstdefinelanguage{Julia}{
+  keywords={abstract,break,case,catch,const,continue,do,else,elseif,end,export,false,finally,for,function,global,if,import,in,let,local,macro,module,mutable,primitive,quote,return,struct,switch,true,try,using,while,where},
+  sensitive=true,
+  comment=[l]\#,
+  morecomment=[s]{\#=}{=\#},
+  morestring=[b]",
+}
+\lstset{
+  language=Julia,
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{blue!65!black}\bfseries,
+  commentstyle=\color{green!40!black},
+  stringstyle=\color{red!50!black},
+  showstringspaces=false,
+  breaklines=true,
+  frame=single,
+  inputencoding=utf8,
+  extendedchars=true,
+  literate=
+  {ä}{{\"a}}1 {ö}{{\"o}}1 {ü}{{\"u}}1
+  {Ä}{{\"A}}1 {Ö}{{\"O}}1 {Ü}{{\"U}}1
+  {ß}{{\ss}}1
+  {–}{{--}}1 {—}{{---}}1 {…}{{\dots}}1
+  {“}{{``}}1 {”}{{''}}1 {’}{{'}}1
+  {→}{{$\to$}}1 {≤}{{$\le$}}1 {≥}{{$\ge$}}1
+  {÷}{{$\div$}}1,
+  rulecolor=\color{black!15},
+  backgroundcolor=\color{black!2},
+  tabsize=2,
+  columns=fullflexible,
+  xleftmargin=0.6em,
+  xrightmargin=0.3em,
+  aboveskip=0.8em,
+  belowskip=0.8em
+}
+
+\title{\textbf{Julia-Zusammenfassung (Programmierung + Plotting)}\\
+\large Cheat-Sheet für ein Einführungsmodul (Numerik/Stochastik-orientiert)}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\tableofcontents
+\vspace{0.8em}
+
+\section{Arbeitsumgebung: REPL, Hilfe, Paketmanager}
+Julia wird oft interaktiv verwendet (REPL), was für Numerik/Stochastik sehr praktisch ist.
+
+\subsection*{REPL-Modi (super wichtig)}
+In der REPL hast du verschiedene Modi:
+\begin{itemize}[itemsep=2pt]
+  \item \textbf{Julia-Modus} (Standard): Rechne/Programmiere normal.
+  \item \textbf{Hilfe} mit \texttt{?}: \texttt{?sin} zeigt Docstring.
+  \item \textbf{Shell} mit \texttt{;}: Shell-Kommandos (z.B. \texttt{;ls}).
+  \item \textbf{Pkg} mit \texttt{]}: Paketmanager.
+\end{itemize}
+
+\subsection*{Pkg-Grundbefehle (Projekt-Umgebungen)}
+Empfohlen: pro Kurs/Projekt eine eigene Umgebung.
+\begin{lstlisting}
+] status
+] add Plots
+] add Random LinearAlgebra Statistics
+] update
+] activate .
+] instantiate
+\end{lstlisting}
+
+\noindent \textbf{Merke:} Mit \texttt{activate .} nutzt du die Umgebung im aktuellen Ordner (erstellt \texttt{Project.toml}).
+
+\section{Grundlagen: Variablen, Typen, Zuweisung}
+\subsection{Variablen und Literale}
+\begin{lstlisting}
+x = 3            # Int
+y = 3.0          # Float64
+z = 2 + 5im      # Complex{Int64}
+b = true         # Bool
+s = "Hallo"      # String
+\end{lstlisting}
+
+\subsection{Typen ansehen und konvertieren}
+\begin{lstlisting}
+typeof(x)        # Int64 (meist)
+Int(3.7)         # 3
+Float64(3)       # 3.0
+\end{lstlisting}
+
+\subsection{Wichtige ``Sonderwerte''}
+\begin{lstlisting}
+nothing          # "kein Wert" (z.B. Return in Prozeduren)
+missing          # "fehlender Wert" (für Daten/Statistik)
+NaN              # Not-a-Number (Float)
+Inf, -Inf
+\end{lstlisting}
+
+\subsection{Konstante}
+\begin{lstlisting}
+const g = 9.81
+\end{lstlisting}
+
+\section{Operatoren und elementare Ausdrücke}
+\subsection{Arithmetik}
+\begin{lstlisting}
+a + b, a - b, a * b, a / b   # / liefert Float
+a ÷ b                        # ganzzahliger Quotient (div)
+a % b                        # Rest (mod)
+a^n                          # Potenz
+\end{lstlisting}
+
+\subsection{Vergleich und Logik}
+\begin{lstlisting}
+x == y, x != y, x < y, x <= y
+x && y, x || y               # short-circuit (wichtig!)
+!x
+\end{lstlisting}
+
+\subsection{Broadcasting (Punkt-Operatoren) — extrem wichtig in Julia}
+Julia unterscheidet klar zwischen Skalar- und Elementoperationen:
+\begin{lstlisting}
+v = [1,2,3]
+v + 1         # ERROR (meist), weil + nicht elementweise definiert ist
+v .+ 1        # [2,3,4]  elementweise
+sin.(v)       # wendet sin auf jedes Element an
+\end{lstlisting}
+\noindent \textbf{Merke:} Der Punkt macht ``apply to each element'' und fused oft zu schnellem Code.
+
+\section{Anweisungen: Bedingungen}
+\begin{lstlisting}
+x = 4
+if x < 0
+    y = -1
+elseif x == 0
+    y = 0
+else
+    y = 1
+end
+\end{lstlisting}
+
+Kurzformen:
+\begin{lstlisting}
+y = (x >= 0) ? sqrt(x) : 0.0      # ternary
+(x > 0) && println("positiv")     # nur wenn Bedingung wahr
+\end{lstlisting}
+
+\section{Schleifen (for/while), break/continue}
+\subsection{for-Schleife}
+\begin{lstlisting}
+s = 0
+for k in 1:10
+    s += k
+end
+\end{lstlisting}
+
+\subsection{while-Schleife}
+\begin{lstlisting}
+x = 1.0
+while x < 100
+    x *= 1.5
+end
+\end{lstlisting}
+
+\subsection{break/continue}
+\begin{lstlisting}
+for k in 1:100
+    if k % 7 == 0
+        continue
+    end
+    if k > 30
+        break
+    end
+end
+\end{lstlisting}
+
+\subsection{Typische Iteratoren}
+\begin{lstlisting}
+for (i,val) in enumerate(["a","b","c"])
+    println(i, " -> ", val)
+end
+
+for (a,b) in zip(1:3, 10:12)
+    println(a, ", ", b)
+end
+\end{lstlisting}
+
+\section{Datenstrukturen: Tuple, Arrays, Dict, Set}
+\subsection{Tuple und NamedTuple}
+\begin{lstlisting}
+t = (1, "x", 3.0)
+name = (vorname="Mika", ects=6)
+
+name.vorname
+\end{lstlisting}
+
+\subsection{Arrays (Vektoren/Matrizen) und Indexing (1-basiert!)}
+\begin{lstlisting}
+v = [1,2,3]           # Vector{Int}
+A = [1 2; 3 4]        # 2x2 Matrix
+zeros(3)              # [0.0,0.0,0.0]
+ones(2,3)
+collect(1:0.5:3)      # Range -> Array
+
+v[1]                  # erstes Element
+A[2,1]                # Zeile 2, Spalte 1
+A[:,2]                # ganze 2. Spalte
+A[1,:]                # ganze 1. Zeile
+\end{lstlisting}
+
+\subsection{Views (schneller, ohne Kopie)}
+\begin{lstlisting}
+@views col2 = A[:,2]     # View statt Kopie
+\end{lstlisting}
+
+\subsection{Comprehensions (kurz und mächtig)}
+\begin{lstlisting}
+sq = [k^2 for k in 1:10]
+M  = [i+j for i in 1:3, j in 1:4]
+\end{lstlisting}
+
+\subsection{Dict und Set}
+\begin{lstlisting}
+d = Dict("a"=>1, "b"=>2)
+d["a"]                 # 1
+
+S = Set([1,2,2,3])      # {1,2,3}
+in(2, S)                # true
+\end{lstlisting}
+
+\section{Funktionen/Prozeduren: Definition, Rückgabe, Mutating-Konvention}
+\subsection{Grundform}
+\begin{lstlisting}
+function f(x)
+    return x^2 + 1
+end
+
+f(3)
+\end{lstlisting}
+
+\subsection{Kurzform}
+\begin{lstlisting}
+g(x) = x^2 + 1
+\end{lstlisting}
+
+\subsection{Mehrere Rückgabewerte (Tuple)}
+\begin{lstlisting}
+function minmax(v)
+    return minimum(v), maximum(v)
+end
+
+mn, mx = minmax([3,1,9])
+\end{lstlisting}
+
+\subsection{Default- und Keyword-Argumente}
+\begin{lstlisting}
+h(x, a=2) = a*x
+
+function gauss(x; mu=0.0, sigma=1.0)
+    return exp(-0.5*((x-mu)/sigma)^2) / (sigma*sqrt(2*pi))
+end
+
+gauss(0.2, mu=0.0, sigma=2.0)
+\end{lstlisting}
+
+\subsection{Anonyme Funktionen und do-Block}
+\begin{lstlisting}
+map(x -> x^2, 1:5)
+
+open("data.txt", "w") do io
+    write(io, "Hallo\n")
+end
+\end{lstlisting}
+
+\subsection{Mutating-Funktionen: Konvention \texttt{!}}
+Wenn eine Funktion ihr Argument \emph{in-place} verändert, endet sie oft auf \texttt{!}.
+\begin{lstlisting}
+v = [3,1,2]
+sort!(v)        # verändert v selbst
+\end{lstlisting}
+
+\section{Ein-/Ausgabe (I/O): Konsole und Dateien}
+\subsection{Konsole}
+\begin{lstlisting}
+println("x = ", 3)
+s = readline()              # liest eine Zeile (String)
+n = parse(Int, s)           # String -> Int
+\end{lstlisting}
+
+\subsection{Dateien lesen/schreiben}
+\begin{lstlisting}
+# schreiben
+open("out.txt", "w") do io
+    for k in 1:3
+        println(io, k, ", ", k^2)
+    end
+end
+
+# lesen (ganzer Inhalt)
+txt = read("out.txt", String)
+
+# zeilenweise lesen
+open("out.txt", "r") do io
+    for line in eachline(io)
+        println("Zeile: ", line)
+    end
+end
+\end{lstlisting}
+
+\section{Module: Code strukturieren, import/using}
+\subsection{Eigenes Modul}
+\begin{lstlisting}
+module MyTools
+export square, hello
+
+square(x) = x^2
+hello() = println("Hi!")
+
+end
+\end{lstlisting}
+
+Nutzung:
+\begin{lstlisting}
+include("MyTools.jl")
+using .MyTools
+square(5)
+\end{lstlisting}
+
+\noindent \textbf{Merke:}
+\begin{itemize}[itemsep=2pt]
+  \item \texttt{include("file.jl")} lädt Code aus Datei.
+  \item \texttt{using Modul} importiert exportierte Namen.
+  \item \texttt{import Modul: f} ist nützlich, wenn du gezielt erweitern willst.
+\end{itemize}
+
+\section{Fortgeschritten: Overloading + (Multiple) Dispatch (Julia-Kernidee)}
+In Julia ist \textbf{Multiple Dispatch} zentral: eine Funktion kann viele \emph{Methoden} haben, ausgewählt nach den Typen \emph{aller} Argumente.
+
+\subsection{Function Overloading (mehrere Methoden)}
+\begin{lstlisting}
+area(r::Real) = pi*r^2                 # Kreis
+area(a::Real, b::Real) = a*b           # Rechteck
+
+area(2)
+area(3,4)
+\end{lstlisting}
+
+Methoden inspizieren:
+\begin{lstlisting}
+methods(area)
+\end{lstlisting}
+
+\subsection{Eigene Typen: \texttt{struct} und Methoden (``OOP-ähnlich'')}
+Julia hat keine ``Klassen'' wie Python/Java, aber \texttt{struct} + Funktionen liefern denselben Effekt (nur idiomatischer).
+
+\begin{lstlisting}
+struct Particle
+    m::Float64
+    x::Float64
+    v::Float64
+end
+
+kinetic(p::Particle) = 0.5*p.m*p.v^2
+\end{lstlisting}
+
+\subsection{Parametrische Typen}
+\begin{lstlisting}
+struct Box{T}
+    value::T
+end
+
+b1 = Box(3)
+b2 = Box("hi")
+\end{lstlisting}
+
+\subsection{Multiple Dispatch mit mehreren Argumenten}
+\begin{lstlisting}
+abstract type Shape end
+struct Circle <: Shape
+    r::Float64
+end
+struct Rect <: Shape
+    a::Float64
+    b::Float64
+end
+
+area(s::Circle) = pi*s.r^2
+area(s::Rect)   = s.a*s.b
+\end{lstlisting}
+
+\noindent \textbf{Warum wichtig?} Du schreibst neue Typen und definierst ``was Funktionen damit tun'' ohne riesige \texttt{if}-Ketten.
+
+\subsection{Operatoren erweitern (Overloading von \texttt{+} etc.)}
+\begin{lstlisting}
+struct Vec2
+    x::Float64
+    y::Float64
+end
+
+import Base: +, -, show
+
++(a::Vec2, b::Vec2) = Vec2(a.x + b.x, a.y + b.y)
+-(a::Vec2, b::Vec2) = Vec2(a.x - b.x, a.y - b.y)
+
+function show(io::IO, v::Vec2)
+    print(io, "Vec2(", v.x, ", ", v.y, ")")
+end
+
+Vec2(1,2) + Vec2(3,4)
+\end{lstlisting}
+
+\subsection{Dispatch herausfinden}
+\begin{lstlisting}
+@which area(Circle(1.0))
+\end{lstlisting}
+
+\section{Lineare Algebra \& Numerik-Basics (typisch in Numerik/Stochastik)}
+(Sehr häufig in Übungen, auch wenn es nicht explizit im Modultext steht.)
+
+\subsection{LinearAlgebra: \texttt{dot}, \texttt{norm}, LGS}
+\begin{lstlisting}
+using LinearAlgebra
+
+v = [1.0,2.0,3.0]
+w = [3.0,0.0,1.0]
+
+dot(v,w)
+norm(v)
+
+A = [3.0 1.0; 2.0 4.0]
+b = [1.0, 2.0]
+x = A \ b              # löst A*x = b
+\end{lstlisting}
+
+\subsection{Einfache Numerik-Aufgabe: Trapezregel}
+\begin{lstlisting}
+function trapz(f, a, b, n::Int)
+    h = (b-a)/n
+    s = 0.5*(f(a) + f(b))
+    for k in 1:n-1
+        s += f(a + k*h)
+    end
+    return h*s
+end
+
+trapz(sin, 0.0, pi, 10_000)
+\end{lstlisting}
+
+\subsection{Random/Statistics: Simulation und Kenngrößen}
+\begin{lstlisting}
+using Random, Statistics
+
+Random.seed!(1)
+x = randn(1000)          # Normalverteilung
+mean(x), std(x)
+
+p = mean(x .> 0)         # Monte-Carlo-Schätzer: P(X>0)
+\end{lstlisting}
+
+\section{Visualisierung: Plots erzeugen (2D/3D)}
+Für Einsteiger ist \texttt{Plots.jl} der Standard.
+\begin{lstlisting}
+using Pkg
+# ] add Plots
+using Plots
+\end{lstlisting}
+
+\subsection{2D-Funktionsplot}
+\begin{lstlisting}
+x = range(0, 2pi; length=400)
+y = sin.(x)
+
+plot(x, y, label="sin(x)", xlabel="x", ylabel="y", title="2D-Plot")
+\end{lstlisting}
+
+\subsection{Scatter, Histogram, mehrere Kurven}
+\begin{lstlisting}
+scatter(x, y, label="Samples")
+
+histogram(randn(10_000), bins=50, label="Histogramm")
+
+plot(x, sin.(x), label="sin")
+plot!(x, cos.(x), label="cos")    # plot! fügt hinzu
+\end{lstlisting}
+
+\subsection{Heatmap/Contour}
+\begin{lstlisting}
+xs = range(-2,2; length=200)
+ys = range(-2,2; length=200)
+Z = [exp(-(x^2+y^2)) for x in xs, y in ys]
+
+heatmap(xs, ys, Z, title="Heatmap")
+contour(xs, ys, Z, title="Contour")
+\end{lstlisting}
+
+\subsection{3D Surface}
+\begin{lstlisting}
+surface(xs, ys, Z, title="3D-Surface")
+\end{lstlisting}
+
+\subsection{Speichern}
+\begin{lstlisting}
+savefig("plot.pdf")
+savefig("plot.png")
+\end{lstlisting}
+
+\section{Typische Übungsaufgaben: Musterlösungen}
+\subsection{1) ``Lies Zahlen ein, berechne Mittelwert, plotte''}
+\begin{lstlisting}
+using Statistics, Plots
+
+data = [1.0, 1.2, 0.9, 1.1, 1.05]
+m = mean(data)
+
+plot(data, marker=:circle, label="data")
+hline!([m], label="mean")
+\end{lstlisting}
+
+\subsection{2) Kleine Simulation (Bernoulli/Monte-Carlo)}
+\begin{lstlisting}
+using Random, Statistics, Plots
+
+function estimate_pi(N::Int)
+    inside = 0
+    for k in 1:N
+        x, y = rand(), rand()
+        inside += (x^2 + y^2 <= 1.0)
+    end
+    return 4 * inside / N
+end
+
+Ns = [10^k for k in 1:6]
+vals = [estimate_pi(N) for N in Ns]
+plot(Ns, vals, xscale=:log10, marker=:circle, xlabel="N", ylabel="pi-Schätzer")
+hline!([pi], label="pi")
+\end{lstlisting}
+
+\section{Fehlerquellen \& Best Practices (prüfungsrelevant, weil es viele Bugs verhindert)}
+\subsection{1) Globals vermeiden (Performance/Verhalten)}
+In Julia sind globale Variablen oft langsam/fehleranfällig. Pack Logik in Funktionen.
+\begin{lstlisting}
+function main()
+    s = 0
+    for k in 1:10^6
+        s += k
+    end
+    return s
+end
+\end{lstlisting}
+
+\subsection{2) \texttt{missing} vs \texttt{nothing}}
+\begin{itemize}[itemsep=2pt]
+\item \texttt{missing}: Daten fehlen (Statistik/Data).
+\item \texttt{nothing}: ``kein Ergebnis''/``kein Objekt'' (Programmlogik).
+\end{itemize}
+
+\subsection{3) Debug/Inspection Tools}
+\begin{lstlisting}
+@show x
+typeof(x)
+methods(f)
+@which f(args...)
+\end{lstlisting}
+
+\section{Mini-Cheat-Sheet (zum schnellen Nachschlagen)}
+\begin{center}
+\begin{tabular}{@{}ll@{}}
+\toprule
+\textbf{Thema} & \textbf{Merksatz / Befehl} \\
+\midrule
+Help/Docs & \texttt{?name} in REPL \\
+Pkg & \texttt{]} \; \texttt{add}, \texttt{activate .}, \texttt{status} \\
+Elementweise & Punkt: \texttt{sin.(x)}, \texttt{A .+ 1} \\
+Indexing & 1-basiert: \texttt{A[1,1]} \\
+Schleifen & \texttt{for}, \texttt{while}, \texttt{break}, \texttt{continue} \\
+Funktionen & \texttt{f(x)=...} oder \texttt{function f(x) ... end} \\
+I/O & \texttt{readline()}, \texttt{open(...)\;do io ... end} \\
+Module & \texttt{module ... end}, \texttt{export}, \texttt{using}, \texttt{import} \\
+Dispatch & mehrere Methoden: \texttt{f(x::T)}; \texttt{methods(f)} \\
+Plotting & \texttt{plot}, \texttt{scatter}, \texttt{histogram}, \texttt{savefig} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\vspace{0.5em}
+\noindent\textbf{Empfehlung für die Klausur/Übung:}
+Kannst du (i) einfache Aufgaben sauber in Funktionen schreiben, (ii) Arrays/Indexing/Broadcasting sicher nutzen,
+(iii) einfache Plots erzeugen, und (iv) ein Beispiel für Multiple Dispatch erklären/programmieren,
+dann bist du für dieses Modul in der Regel sehr gut aufgestellt.
+
+\end{document}

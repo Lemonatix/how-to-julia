@@ -1,0 +1,59 @@
+\contentsline {section}{\numberline {1}Arbeitsumgebung: REPL, Hilfe, Paketmanager}{2}{section.1}%
+\contentsline {section}{\numberline {2}Grundlagen: Variablen, Typen, Zuweisung}{3}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Variablen und Literale}{3}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Typen ansehen und konvertieren}{3}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}Wichtige ``Sonderwerte''}{3}{subsection.2.3}%
+\contentsline {subsection}{\numberline {2.4}Konstante}{3}{subsection.2.4}%
+\contentsline {section}{\numberline {3}Operatoren und elementare Ausdrücke}{3}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Arithmetik}{3}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Vergleich und Logik}{3}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}Broadcasting (Punkt-Operatoren) — extrem wichtig in Julia}{4}{subsection.3.3}%
+\contentsline {section}{\numberline {4}Anweisungen: Bedingungen}{4}{section.4}%
+\contentsline {section}{\numberline {5}Schleifen (for/while), break/continue}{4}{section.5}%
+\contentsline {subsection}{\numberline {5.1}for-Schleife}{4}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}while-Schleife}{4}{subsection.5.2}%
+\contentsline {subsection}{\numberline {5.3}break/continue}{4}{subsection.5.3}%
+\contentsline {subsection}{\numberline {5.4}Typische Iteratoren}{5}{subsection.5.4}%
+\contentsline {section}{\numberline {6}Datenstrukturen: Tuple, Arrays, Dict, Set}{5}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Tuple und NamedTuple}{5}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.2}Arrays (Vektoren/Matrizen) und Indexing (1-basiert!)}{5}{subsection.6.2}%
+\contentsline {subsection}{\numberline {6.3}Views (schneller, ohne Kopie)}{5}{subsection.6.3}%
+\contentsline {subsection}{\numberline {6.4}Comprehensions (kurz und mächtig)}{5}{subsection.6.4}%
+\contentsline {subsection}{\numberline {6.5}Dict und Set}{5}{subsection.6.5}%
+\contentsline {section}{\numberline {7}Funktionen/Prozeduren: Definition, Rückgabe, Mutating-Konvention}{6}{section.7}%
+\contentsline {subsection}{\numberline {7.1}Grundform}{6}{subsection.7.1}%
+\contentsline {subsection}{\numberline {7.2}Kurzform}{6}{subsection.7.2}%
+\contentsline {subsection}{\numberline {7.3}Mehrere Rückgabewerte (Tuple)}{6}{subsection.7.3}%
+\contentsline {subsection}{\numberline {7.4}Default- und Keyword-Argumente}{6}{subsection.7.4}%
+\contentsline {subsection}{\numberline {7.5}Anonyme Funktionen und do-Block}{6}{subsection.7.5}%
+\contentsline {subsection}{\numberline {7.6}Mutating-Funktionen: Konvention \texttt {!}}{6}{subsection.7.6}%
+\contentsline {section}{\numberline {8}Ein-/Ausgabe (I/O): Konsole und Dateien}{7}{section.8}%
+\contentsline {subsection}{\numberline {8.1}Konsole}{7}{subsection.8.1}%
+\contentsline {subsection}{\numberline {8.2}Dateien lesen/schreiben}{7}{subsection.8.2}%
+\contentsline {section}{\numberline {9}Module: Code strukturieren, import/using}{7}{section.9}%
+\contentsline {subsection}{\numberline {9.1}Eigenes Modul}{7}{subsection.9.1}%
+\contentsline {section}{\numberline {10}Fortgeschritten: Overloading + (Multiple) Dispatch (Julia-Kernidee)}{8}{section.10}%
+\contentsline {subsection}{\numberline {10.1}Function Overloading (mehrere Methoden)}{8}{subsection.10.1}%
+\contentsline {subsection}{\numberline {10.2}Eigene Typen: \texttt {struct} und Methoden (``OOP-ähnlich'')}{8}{subsection.10.2}%
+\contentsline {subsection}{\numberline {10.3}Parametrische Typen}{8}{subsection.10.3}%
+\contentsline {subsection}{\numberline {10.4}Multiple Dispatch mit mehreren Argumenten}{8}{subsection.10.4}%
+\contentsline {subsection}{\numberline {10.5}Operatoren erweitern (Overloading von \texttt {+} etc.)}{9}{subsection.10.5}%
+\contentsline {subsection}{\numberline {10.6}Dispatch herausfinden}{9}{subsection.10.6}%
+\contentsline {section}{\numberline {11}Lineare Algebra \& Numerik-Basics (typisch in Numerik/Stochastik)}{9}{section.11}%
+\contentsline {subsection}{\numberline {11.1}LinearAlgebra: \texttt {dot}, \texttt {norm}, LGS}{9}{subsection.11.1}%
+\contentsline {subsection}{\numberline {11.2}Einfache Numerik-Aufgabe: Trapezregel}{9}{subsection.11.2}%
+\contentsline {subsection}{\numberline {11.3}Random/Statistics: Simulation und Kenngrößen}{10}{subsection.11.3}%
+\contentsline {section}{\numberline {12}Visualisierung: Plots erzeugen (2D/3D)}{10}{section.12}%
+\contentsline {subsection}{\numberline {12.1}2D-Funktionsplot}{10}{subsection.12.1}%
+\contentsline {subsection}{\numberline {12.2}Scatter, Histogram, mehrere Kurven}{10}{subsection.12.2}%
+\contentsline {subsection}{\numberline {12.3}Heatmap/Contour}{10}{subsection.12.3}%
+\contentsline {subsection}{\numberline {12.4}3D Surface}{11}{subsection.12.4}%
+\contentsline {subsection}{\numberline {12.5}Speichern}{11}{subsection.12.5}%
+\contentsline {section}{\numberline {13}Typische Übungsaufgaben: Musterlösungen}{11}{section.13}%
+\contentsline {subsection}{\numberline {13.1}1) ``Lies Zahlen ein, berechne Mittelwert, plotte''}{11}{subsection.13.1}%
+\contentsline {subsection}{\numberline {13.2}2) Kleine Simulation (Bernoulli/Monte-Carlo)}{11}{subsection.13.2}%
+\contentsline {section}{\numberline {14}Fehlerquellen \& Best Practices (prüfungsrelevant, weil es viele Bugs verhindert)}{11}{section.14}%
+\contentsline {subsection}{\numberline {14.1}1) Globals vermeiden (Performance/Verhalten)}{11}{subsection.14.1}%
+\contentsline {subsection}{\numberline {14.2}2) \texttt {missing} vs \texttt {nothing}}{12}{subsection.14.2}%
+\contentsline {subsection}{\numberline {14.3}3) Debug/Inspection Tools}{12}{subsection.14.3}%
+\contentsline {section}{\numberline {15}Mini-Cheat-Sheet (zum schnellen Nachschlagen)}{12}{section.15}%
