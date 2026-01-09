@@ -1,0 +1,352 @@
+% !TeX program = pdflatex
+% Formelzettel (DIN A4) – Vorderseite / Rückseite als 2 Seiten
+\documentclass[10pt,a4paper]{article}
+
+\usepackage[margin=1.25cm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb}
+\usepackage{multicol}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+% ---------- Listings (Julia) ----------
+\usepackage{listings}
+\lstdefinelanguage{Julia}{
+  keywords={abstract,break,case,catch,const,continue,do,else,elseif,end,export,false,finally,for,function,global,if,import,in,let,local,macro,module,mutable,primitive,quote,return,struct,switch,true,try,using,while,where},
+  sensitive=true,
+  comment=[l]\#,
+  morecomment=[s]{\#=}{=\#},
+  morestring=[b]",
+}
+\lstset{
+  language=Julia,
+  basicstyle=\ttfamily\scriptsize,
+  keywordstyle=\color{blue!60!black}\bfseries,
+  commentstyle=\color{green!35!black},
+  stringstyle=\color{red!45!black},
+  showstringspaces=false,
+  breaklines=true,
+  frame=single,
+  rulecolor=\color{black!20},
+  backgroundcolor=\color{black!2},
+  tabsize=2,
+  columns=fullflexible,
+  xleftmargin=0.35em,
+  xrightmargin=0.20em,
+  aboveskip=0.45em,
+  belowskip=0.45em
+}
+
+\setlist[itemize]{leftmargin=1.1em, itemsep=2pt, topsep=2pt}
+\setlength{\columnsep}{0.6cm}
+\pagestyle{empty}
+
+\newcommand{\hsmall}{\vspace{-0.25em}}
+\newcommand{\blocktitle}[1]{\textbf{#1}\hsmall}
+
+\begin{document}
+
+% ===================== VORDERSEITE =====================
+{\Large\bfseries Formelzettel Julia (Vorderseite)}\hfill{\small Stand: \today}
+\vspace{0.4em}\hrule\vspace{0.5em}
+
+\begin{multicols}{2}
+\raggedcolumns
+
+\blocktitle{REPL / Pkg}
+\begin{itemize}
+\item \texttt{?name} Hilfe/Docs, \texttt{]} Paketmodus, \texttt{;} Shell
+\item Umgebung: \texttt{] activate .} (lokales Project), \texttt{] instantiate}
+\item Pakete: \texttt{] add Plots}, \texttt{] status}
+\end{itemize}
+
+\blocktitle{Typen / Konvert / Grenzen}
+\begin{lstlisting}
+typeof(x)              # Typ von x (z.B. Int64, Float64, Vector{...})
+
+Int(x)                 # Konvert: nach Int (Achtung: schneidet bei Float ab)
+Float64(x)             # Konvert: nach Float64
+parse(Int, s)          # String s -> Int (z.B. s="123" -> 123)
+
+typemin(Int8)          # kleinster Int8 Wert (-128)
+typemax(Int8)          # groesster Int8 Wert (127)
+\end{lstlisting}
+\begin{itemize}
+\item \texttt{parse} fuer Strings; \texttt{typemin/max} fuer Overflow-Aufgaben.
+\end{itemize}
+
+\blocktitle{Division / Modulo / Rational}
+\begin{lstlisting}
+a / b                  # "echte" Division -> oft Float (z.B. 1/2 = 0.5)
+div(a,b)               # ganzzahlige Division (Quotient ohne Rest)
+a % b                  # Rest (modulo)
+
+1//4                   # Rational: exakt 1/4 (kein Rundungsfehler)
+\end{lstlisting}
+\begin{itemize}
+\item \texttt{/} kann Float liefern; \texttt{//} ist exakt (wichtig bei Kettenbruechen).
+\end{itemize}
+
+\blocktitle{Broadcasting (Punkt!) + Praezedenz}
+\begin{lstlisting}
+y  = f.(x)             # wendet f elementweise auf x an
+y .= f.(x)             # schreibt elementweise in y (in-place, keine neue Allocation)
+
+A .+ 1                 # addiert 1 zu JEDEM Eintrag von A (elementweise)
+2 .^ (1:4)             # elementweise Potenzen fuer Range 1:4 -> [2,4,8,16]
+                       # Klammern bei Ranges vermeiden Parser-Fallen
+\end{lstlisting}
+\begin{itemize}
+\item Punkt = elementweise (und oft schneller, weil ``fused'').
+\item Bei Ranges fast immer Klammern setzen: \lstinline!2 .^ (1:4)!.
+\end{itemize}
+
+\blocktitle{Control Flow}
+\begin{lstlisting}
+if cond                # falls cond == true
+    ...
+elseif cond2           # sonst falls cond2 == true
+    ...
+else                   # sonst
+    ...
+end
+
+for k in 1:n           # k laeuft ueber 1,2,...,n
+    ...
+end
+
+while cond             # wiederhole solange cond true ist
+    ...
+end
+
+break                  # Schleife sofort verlassen
+continue               # naechster Schleifendurchlauf
+\end{lstlisting}
+
+\blocktitle{Arrays / Indexing (1-basiert)}
+\begin{lstlisting}
+v = [1,2,3]            # Vector{Int}
+A = [1 2; 3 4]         # Matrix: ; startet neue Zeile
+
+v[1]                   # erstes Element (Julia ist 1-basiert!)
+v[end]                 # letztes Element
+
+A[i,j]                 # Element (i,j)
+A[:,j]                 # ganze Spalte j
+A[i,:]                 # ganze Zeile i
+
+zeros(n)               # Vector mit n Nullen (Float64)
+ones(m,n)              # m x n Matrix aus Einsen
+
+xs = range(a, b; length=N)    # N Stuetstellen von a bis b (inkl.)
+y  = [f(x) for x in xs]        # Comprehension: wende f auf jedes x an
+\end{lstlisting}
+\begin{itemize}
+\item 1-basiert; \texttt{end} = letzter Index.
+\item \texttt{A[:,j]} ganze Spalte, \texttt{A[i,:]} ganze Zeile.
+\end{itemize}
+
+\blocktitle{Iteratoren / Ranges (haeufig in Aufgaben)}
+\begin{lstlisting}
+r = 1:5                # Range (lazy), noch kein Array
+v = collect(r)         # macht daraus Vector [1,2,3,4,5]
+
+for (i,val) in enumerate(v)   # i=Index, val=Wert
+    ...
+end
+
+for (a,b) in zip(1:3, 10:12)  # Paare (1,10), (2,11), (3,12)
+    ...
+end
+
+for i in eachindex(v)         # sicherer Index-Iterator fuer Arrays
+    ...
+end
+\end{lstlisting}
+
+\blocktitle{Funktionen (default + keyword) + Tuples}
+\begin{lstlisting}
+f(x) = x^2 + 1          # Kurzform: eine Zeile
+
+function g(x, a=2; mu=0.0)   # a: Default-Arg, mu: Keyword-Arg (nach ;)
+    return a*x + mu          # Rueckgabewert (return optional, aber klar)
+end
+
+mn, mx = minimum(v), maximum(v)   # Mehrfachzuweisung (Tuple)
+\end{lstlisting}
+\begin{itemize}
+\item Keywords nach \texttt{;} (z.B. \texttt{mu=}).
+\item Mehrere Rueckgaben via Tuple/Mehrfachzuweisung.
+\end{itemize}
+
+\blocktitle{I/O (Konsole + Datei)}
+\begin{lstlisting}
+println("x=", x)        # Ausgabe auf Konsole mit Zeilenumbruch
+s = readline()          # liest eine Zeile (String) von stdin
+n = parse(Int, s)       # String -> Int
+
+open("out.txt","w") do io     # Datei oeffnen (write), io ist Handle
+    println(io, "hi")         # schreibt in Datei (nicht Konsole)
+end                           # Datei wird automatisch geschlossen
+
+txt = read("out.txt", String)  # liest ganze Datei als String
+\end{lstlisting}
+\begin{itemize}
+\item \lstinline!open(... ) do io ... end! schliesst automatisch.
+\end{itemize}
+
+\blocktitle{Debug / Inspection}
+\begin{lstlisting}
+@show x                # druckt "x = <wert>" und gibt x zurueck
+methods(f)             # listet alle Methoden (Overloads) von f
+@which f(args...)      # zeigt, welche Methode fuer args gewaehlt wird
+\end{lstlisting}
+
+\blocktitle{Mini-Fallen (merken!)}
+\begin{itemize}
+\item Tuple immutable: \texttt{t[2]=...} geht nicht.
+\item Aliasing: \texttt{b=a} teilt Referenz; Mutation wirkt auf beide.
+\item Kopie: \texttt{copy(a)} (flach), \texttt{deepcopy(a)} (tief) falls verschachtelt.
+\item \lstinline!for i in [1:4]! iteriert ueber \emph{ein} Range-Objekt; richtig: \lstinline!for i in 1:4!.
+\end{itemize}
+
+\end{multicols}
+
+\newpage
+
+% ===================== RUECKSEITE =====================
+{\Large\bfseries Formelzettel Julia (Rueckseite)}\hfill{\small Templates / Rezepte}
+\vspace{0.4em}\hrule\vspace{0.5em}
+
+\begin{multicols}{2}
+\raggedcolumns
+
+\blocktitle{A) Baum-Rekursion: Knotenanzahl + Tiefe}
+\begin{lstlisting}
+function rec(B)
+    N, tmax = 1, 0             # N: Knotenanzahl, tmax: max. Kind-Tiefe
+
+    for kind in B              # iteriere ueber alle Kinder-Teilbaeume
+        Nk, tk = rec(kind)     # rekursiv: (Knoten, Tiefe) des Kindes
+        N += Nk                # addiere Knoten des Kindes
+        tmax = max(tmax, tk)   # merke groesste Tiefe unter den Kindern
+    end
+
+    return N, 1 + tmax         # Tiefe = 1 (aktueller) + max Kind-Tiefe
+end
+\end{lstlisting}
+\begin{itemize}
+\item Muster: ``aktueller Knoten'' + rekursiv ueber Kinder.
+\item Tiefe = \texttt{1 + max(Kinder-Tiefen)}.
+\end{itemize}
+
+\blocktitle{B) Periode/Zyklus finden (Dict ``seen'')}
+\begin{lstlisting}
+function finde_periode(f, w)
+    seen = Dict{Int,Int}()     # map: Zustand w -> erster Index i
+    i = 0                      # Schrittzaehler
+
+    while !haskey(seen, w)     # solange Zustand w noch nicht gesehen wurde
+        seen[w] = i            # merke den ersten Zeitpunkt i fuer diesen Zustand
+        w = f(w)               # gehe zum naechsten Zustand
+        i += 1                 # ein Schritt weiter
+    end
+
+    N = seen[w]                # Startindex des Zyklus (erstes Auftreten von w)
+    d = i - N                  # Periodenlaenge (Abstand bis Wiederholung)
+    return d, N                # (Periode, Start)
+end
+\end{lstlisting}
+\begin{itemize}
+\item Speichere Zustand $\to$ Index; bei Wiederholung: Zyklusstart \texttt{N}, Periode \texttt{d}.
+\end{itemize}
+
+\blocktitle{C) Polynom aus Koeff.-Vektor + Ableitung}
+\begin{lstlisting}
+werte(c, z) = sum([c[i]*z^(i-1) for i in 1:length(c)])
+# c[i] ist Koeffizient von z^(i-1): i=1 -> z^0 (konstant), i=2 -> z^1, ...
+
+ableit(c)   = [k*c[k+1] for k in 1:length(c)-1]
+# Ableitung: (c[k+1]*z^k)' = k*c[k+1]*z^(k-1)
+\end{lstlisting}
+\begin{itemize}
+\item Interpretation: \texttt{c[i]} ist Koeff. von $z^{i-1}$.
+\item Ableitung: aus $c_{k+1} z^k$ wird $k c_{k+1} z^{k-1}$.
+\end{itemize}
+
+\blocktitle{D) Plotting (Plots.jl): Line + Scatter + Save}
+\begin{lstlisting}
+using Plots
+
+x = range(0, 2pi; length=400)      # viele Punkte im Intervall
+y = sin.(x)                         # elementweise sin
+
+plot(x, y; label="sin", xlabel="x", ylabel="y",
+     title="Line plot")             # Linienplot
+plot!(x, cos.(x); label="cos")      # zweite Kurve im selben Plot
+
+scatter!(x[1:20:end], y[1:20:end]; label="samples") # Punkte oben drauf (optional)
+
+savefig("fig.pdf")                  # Plot speichern (pdf/png)
+\end{lstlisting}
+\begin{itemize}
+\item \texttt{plot!}/\texttt{scatter!} fuegt zum aktuellen Plot hinzu; ohne \texttt{!} neuer Plot.
+\item Labels/Achsen: \texttt{xlabel}, \texttt{ylabel}, \texttt{title}, \texttt{label}.
+\end{itemize}
+
+\blocktitle{E) Kettenbruch: auswerten / erzeugen (exakt)}
+\begin{lstlisting}
+function berechne_kettenbruch(a)::Rational
+    v = a[end]                     # starte hinten: v = a_n
+    for alpha in a[end-1:-1:1]     # gehe rueckwaerts: a_{n-1},...,a_1
+        v = alpha + 1//v           # v = alpha + 1/v (exakt rational!)
+    end
+    return v
+end
+
+function erzeuge_kettenbruch(w::Rational)
+    a = Int[]                      # sammelt die alpha-Werte (Ganzteile)
+    while true
+        alpha = floor(Int, w)      # ganzzahliger Anteil von w
+        push!(a, alpha)            # alpha ans Ende der Liste
+        d = w - alpha              # Restteil
+        d == 0 && break            # wenn Rest 0: fertig
+        w = 1//d                   # sonst invertieren (exakt) und weiter
+    end
+    return a
+end
+\end{lstlisting}
+\begin{itemize}
+\item \texttt{1//v} haelt alles rational (kein Float-Drift).
+\item Rueckwaerts auswerten: $v=a_n$, dann $v=a_k + 1/v$.
+\end{itemize}
+
+\blocktitle{F) Bits / Interpretation}
+\begin{lstlisting}
+bitstring(x)                 # gibt Bitdarstellung als String zurueck
+reinterpret(Int8, 0b11111100)# interpretiert dieselben Bits als Int8
+\end{lstlisting}
+\begin{itemize}
+\item \texttt{bitstring}: Binaerdarstellung; \texttt{reinterpret}: gleiche Bits, anderer Typ.
+\end{itemize}
+
+\blocktitle{G) Numerik/Stats Mini-Toolbox}
+\begin{lstlisting}
+using LinearAlgebra
+x = A \ b                     # loest lineares Gleichungssystem A*x = b
+dot(v,w)                      # Skalarprodukt
+norm(v)                       # euklidische Norm
+
+using Random, Statistics
+Random.seed!(1)               # macht Zufall reproduzierbar
+x = randn(N)                  # N normalverteilte Zufallszahlen
+mean(x); std(x)               # Mittelwert und Standardabweichung
+\end{lstlisting}
+
+\end{multicols}
+
+\end{document}
