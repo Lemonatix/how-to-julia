@@ -11,7 +11,7 @@ end
 F(z) = ForwardDiff.gradient(Vhat, z)
 J(z) = ForwardDiff.jacobian(F, z)
 
-function newton_bucket(z0; maxiter=10)
+function newton_bgucket(z0; maxiter=10)
     z = copy(z0)
     for k in 1:maxiter
         z -= J(z) \ F(z)
